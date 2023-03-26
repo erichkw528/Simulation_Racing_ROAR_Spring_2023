@@ -44,9 +44,9 @@ def checkpoint(checkpoints, car_coords):
     """Checks if the car has reached a checkpoint"""
     car_coords = (int(car_coords[1]), int(car_coords[0]))
     for i, checkpoint in enumerate(checkpoints):
-        i += 1
         if abs(car_coords[0] - checkpoint[0]) < 7 and abs(car_coords[1] - checkpoint[1]) < 7:
             return i
+        i += 1
     return None
 
 def at_point(coords, car_coords, margin = 10):
@@ -74,7 +74,7 @@ def prep_map_visualization(map_path, checkpoints_path):
         y_coord = round(float(checkpoint[0]))
         x_coord = round(float(checkpoint[2]))
         data[x_coord-30:x_coord+30, y_coord-30:y_coord+30] = (255, 0, 0)
-        data = cv2.putText(data, str(i + 1), (max(0, (y_coord - 150)), (max(0, (x_coord - 150)))), cv2.FONT_HERSHEY_SIMPLEX, 5, (255, 255, 0), 10, cv2.LINE_AA)
+        data = cv2.putText(data, str(i), (max(0, (y_coord - 150)), (max(0, (x_coord - 150)))), cv2.FONT_HERSHEY_SIMPLEX, 5, (255, 255, 0), 10, cv2.LINE_AA)
     return data
 
 def show_map(data, car_coords, speed = None, throttle = None):

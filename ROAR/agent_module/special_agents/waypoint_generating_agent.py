@@ -50,7 +50,6 @@ class WaypointGeneratingAgent(Agent):
                  vehicle: Vehicle) -> VehicleControl:
         super(WaypointGeneratingAgent, self).run_step(sensors_data=sensors_data,
                                                      vehicle=vehicle)
-        
         # Showing minimap
         # Showing live minimap
         car_coords = [float(i) for i in self.vehicle.transform.record().split(",")]
