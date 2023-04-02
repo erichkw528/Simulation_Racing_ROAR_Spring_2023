@@ -75,7 +75,9 @@ class PIDFastAgent(Agent):
                  sensors_data: SensorsData) -> VehicleControl:
         super(PIDFastAgent, self).run_step(vehicle=vehicle,
                                        sensors_data=sensors_data)
-        
+        print(self.vehicle.transform.record())
+        print(self.vehicle.control.brake)
+        print(self.vehicle.control.throttle)
 
         self.car_coords = [float(i) for i in self.vehicle.transform.record().split(",")][0:3:2]
 
