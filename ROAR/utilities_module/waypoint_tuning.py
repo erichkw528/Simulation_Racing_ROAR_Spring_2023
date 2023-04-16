@@ -49,7 +49,8 @@ def checkpoint(checkpoints, car_coords):
         i += 1
     return None
 
-def at_point(coords, car_coords, margin = 10):
+# helper function for determining if the vehicle has reached near a point (determined by the margin)
+def at_point(coords, car_coords, margin = 10): 
     """Checks if the car has reached a point"""
     car_coords = (int(car_coords[1]), int(car_coords[0]))
     coords = (int(coords[1]), int(coords[0]))

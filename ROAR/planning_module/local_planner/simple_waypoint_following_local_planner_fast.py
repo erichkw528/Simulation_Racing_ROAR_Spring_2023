@@ -58,7 +58,7 @@ class SimpleWaypointFollowingLocalPlanner(LocalPlanner):
         Returns:
             None
         """
-        # print("CLEARING")
+        print("CLEARING")
         self.way_points_queue.clear()
         while (
                 self.mission_planner.mission_plan
@@ -68,15 +68,27 @@ class SimpleWaypointFollowingLocalPlanner(LocalPlanner):
         # set waypoint queue to current spawn location
         # 1. find closest waypoint
         # 2. remove all waypoints prior to closest waypoint
+        print("Printing self.spawn_point_id: {}".format(self.spawn_point_id))
         if self.spawn_point_id != 12:
             closest_waypoint = self.way_points_queue[0]
+            # print("printing self.way_points_queue[0]: {}".format(self.way_points_queue[0]))
+            # print("Printing closest_waypoint: {}".format(closest_waypoint))
             for waypoint in self.way_points_queue:
+                # print("Printing closest_waypoint: {}".format(closest_waypoint))
+                # print("Waypoint in waypoints_queue: {}".format(waypoint))
                 cur_dist = self.agent.vehicle.transform.location.distance(waypoint.location)
                 closest_dist = self.agent.vehicle.transform.location.distance(closest_waypoint.location)
+                # print("Checking cur_dist: {}".format(closest_dist))
+                # print("Checking cloest_dist: {}".format(closest_dist))
                 if  cur_dist < closest_dist:
                     closest_waypoint = waypoint
+
+
+            print(len(self.way_points_queue))
             while self.way_points_queue[0] != closest_waypoint:
                 self.way_points_queue.popleft()
+
+        print(len(self.way_points_queue))
 
 
     def is_done(self) -> bool:

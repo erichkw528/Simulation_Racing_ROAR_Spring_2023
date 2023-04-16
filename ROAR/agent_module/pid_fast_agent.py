@@ -3,6 +3,8 @@ from pathlib import Path
 from ROAR.control_module.pid_fast_controller import PIDFastController
 from ROAR.planning_module.local_planner.simple_waypoint_following_local_planner_fast import \
     SimpleWaypointFollowingLocalPlanner
+# from ROAR.planning_module.local_planner.simple_waypoint_following_local_planner import \
+    # SimpleWaypointFollowingLocalPlanner
 from ROAR.planning_module.behavior_planner.behavior_planner import BehaviorPlanner
 from ROAR.planning_module.mission_planner.waypoint_following_mission_planner import WaypointFollowingMissionPlanner
 from ROAR.utilities_module.data_structures_models import SensorsData
@@ -75,6 +77,7 @@ class PIDFastAgent(Agent):
                  sensors_data: SensorsData) -> VehicleControl:
         super(PIDFastAgent, self).run_step(vehicle=vehicle,
                                        sensors_data=sensors_data)
+        # print(self.vehicle.transform)
         
 
         self.car_coords = [float(i) for i in self.vehicle.transform.record().split(",")][0:3:2]
@@ -110,18 +113,21 @@ class PIDFastAgent(Agent):
             self.return_time = True
             self.most_recent_checkpoint = cur_checkpoint
 
+
+        # modify here? 
+
         # checking if first turn passed
-        if self.most_recent_checkpoint in [12, 12.25]:
-            # during turn
-            if at_point((1332.74462890625, 4245.38818359375), car_coords=self.car_coords) or at_point((1329.954345703125, 4236.50537109375), car_coords=self.car_coords):
-                self.most_recent_checkpoint = 12.5
-                if not competitive_mode:
-                    print("REACHED")
-            # pre turn
-            if at_point((1687.881103515625, 4203.75439453125), car_coords=self.car_coords):
-                self.most_recent_checkpoint = 12.25
-                if not competitive_mode:
-                    print("REACHED")
+        # if self.most_recent_checkpoint in [12, 12.25]:
+        #     # during turn
+        #     if at_point((1332.74462890625, 4245.38818359375), car_coords=self.car_coords) or at_point((1329.954345703125, 4236.50537109375), car_coords=self.car_coords):
+        #         self.most_recent_checkpoint = 12.5
+        #         if not competitive_mode:
+        #             print("REACHED")
+        #     # pre turn
+        #     if at_point((1687.881103515625, 4203.75439453125), car_coords=self.car_coords):
+        #         self.most_recent_checkpoint = 12.25
+        #         if not competitive_mode:
+        #             print("REACHED")
         
         # checking for six ramp
         if self.most_recent_checkpoint == 6:

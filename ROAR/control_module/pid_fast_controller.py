@@ -4,6 +4,7 @@ from pydantic import BaseModel, Field
 from ROAR.control_module.controller import Controller
 from ROAR.utilities_module.vehicle_models import VehicleControl, Vehicle
 
+
 from ROAR.utilities_module.data_structures_models import Transform, Location
 from collections import deque
 import numpy as np
@@ -68,11 +69,16 @@ class PIDFastController(Controller):
 
         #print(pitch, self.delta_pitch)
 
+
         # throttle/brake control
+        # get location and set brake point & brake point release
+        curr_x = self.agent.vehicle.transform.location.x #need to getlocation 
+        curr_y = self.agent.vehicle.transform.location.y
+        curr_z = self.agent.vehicle.transform.location.z
         if self.force_brake:
             throttle = -1
             brake = 1
-            #print("Force break")
+            print("Force break")
         # Section 9 ramps
         elif current_speed > 260:
             throttle = -1
@@ -148,6 +154,14 @@ class PIDFastController(Controller):
         if gear == 0:
             gear += 1
         #if pitch > 3 and current_speed < 6: gear = 1
+
+        # for section 0-1: 
+        # curr_x is braking length
+        if (curr_x < 1600 and curr_x > 1400) and (curr_z < 4100 and curr_z > 4300):
+            print("Supposed to brake for corner 1.")
+            brake = 1
+            throttle = 0
+        # added controls above^
 
         return VehicleControl(throttle=throttle, steering=steering, brake=brake, manual_gear_shift=True, gear=gear)
 
