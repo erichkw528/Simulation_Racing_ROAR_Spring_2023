@@ -16,7 +16,7 @@ from ROAR.utilities_module.waypoint_tuning import *
 import os
 
 # SWITCH OFF FOR SUBMISSIONS
-competitive_mode = True
+competitive_mode = False
 
 class PIDFastAgent(Agent):
     def __init__(self, target_speed=40, **kwargs):
@@ -77,9 +77,6 @@ class PIDFastAgent(Agent):
                  sensors_data: SensorsData) -> VehicleControl:
         super(PIDFastAgent, self).run_step(vehicle=vehicle,
                                        sensors_data=sensors_data)
-        print(self.vehicle.transform.record())
-        print(self.vehicle.control.brake)
-        print(self.vehicle.control.throttle)
 
         self.car_coords = [float(i) for i in self.vehicle.transform.record().split(",")][0:3:2]
 
@@ -103,6 +100,7 @@ class PIDFastAgent(Agent):
                 self.times_list.append(self.time_var - self.start_time)
                 self.times_list_diffs = self.get_diff_in_times()
 
+
                 print("Times", self.times_list)
                 print("Time Diffs", self.times_list_diffs)
                 print("Total Time", sum(self.times_list_diffs))
@@ -118,17 +116,18 @@ class PIDFastAgent(Agent):
         # modify here? 
 
         # checking if first turn passed
-        # if self.most_recent_checkpoint in [12, 12.25]:
-        #     # during turn
-        #     if at_point((1332.74462890625, 4245.38818359375), car_coords=self.car_coords) or at_point((1329.954345703125, 4236.50537109375), car_coords=self.car_coords):
-        #         self.most_recent_checkpoint = 12.5
-        #         if not competitive_mode:
-        #             print("REACHED")
-        #     # pre turn
-        #     if at_point((1687.881103515625, 4203.75439453125), car_coords=self.car_coords):
-        #         self.most_recent_checkpoint = 12.25
-        #         if not competitive_mode:
-        #             print("REACHED")
+        # used to be commented for the next 11 lines
+        if self.most_recent_checkpoint in [12, 12.25]:
+            # during turn
+            if at_point((1332.74462890625, 4245.38818359375), car_coords=self.car_coords) or at_point((1329.954345703125, 4236.50537109375), car_coords=self.car_coords):
+                self.most_recent_checkpoint = 12.5
+                if not competitive_mode:
+                    print("REACHED")
+            # pre turn
+            if at_point((1687.881103515625, 4203.75439453125), car_coords=self.car_coords):
+                self.most_recent_checkpoint = 12.25
+                if not competitive_mode:
+                    print("REACHED")
         
         # checking for six ramp
         if self.most_recent_checkpoint == 6:
@@ -152,4 +151,11 @@ class PIDFastAgent(Agent):
             self.logger.debug("Path Following Agent is Done. Idling.")
         else:
             control = self.local_planner.run_in_series(self.most_recent_checkpoint)
+            
+            
+        print("pid_fast_agent: ", control)
+        # print("Printing Current Location: ", self.vehicle.transform.record())
+        # print("Current Brake Force: ", self.vehicle.control.brake)
+        # print("Current throttle: ", self.vehicle.control.throttle)
+
         return control

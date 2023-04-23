@@ -166,6 +166,7 @@ class CarlaBridge(Bridge):
         return carla.VehicleControl(
             throttle=abs(control.throttle),
             steer=control.steering,
+            # brake=control.brake, # changed braking
             brake=0,
             hand_brake=False,
             reverse=True if control.throttle < 0 else False,

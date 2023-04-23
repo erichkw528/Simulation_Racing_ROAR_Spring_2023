@@ -72,15 +72,12 @@ class PIDFastController(Controller):
 
         # throttle/brake control
         # get location and set brake point & brake point release
-        curr_x = self.agent.vehicle.transform.location.x #need to getlocation 
+        curr_x = self.agent.vehicle.transform.location.x  
         curr_y = self.agent.vehicle.transform.location.y
         curr_z = self.agent.vehicle.transform.location.z
-        if self.force_brake:
-            throttle = -1
-            brake = 1
-            print("Force break")
-        # Section 9 ramps
-        elif current_speed > 260:
+
+
+        if current_speed > 260:
             throttle = -1
             brake = 1
         elif self.delta_pitch > 0.7 and current_speed > 100 and not self.pitch_bypass and most_recent_checkpoint in [9] and pitch > -1.0: # big ramp, high speed
@@ -155,13 +152,33 @@ class PIDFastController(Controller):
             gear += 1
         #if pitch > 3 and current_speed < 6: gear = 1
 
-        # for section 0-1: 
-        # curr_x is braking length
-        if (curr_x < 1600 and curr_x > 1400) and (curr_z < 4100 and curr_z > 4300):
-            print("Supposed to brake for corner 1.")
-            brake = 1
+        # for 1st corner: 
+        if (curr_x > 1370 and curr_x < 1694) and (curr_z > 4204 and curr_z < 4270): # x decreasing & z increasing
+            # print("BRAKING for corner 1.")
+            self.force_brake = True
+
+        # for 2nd corner:
+        elif (curr_x < 1343 and curr_x > 1318) and (curr_z < 3754 and curr_z > 3580): # x & z both decreasing
+            # print("BRAKING for corner 2.")
+            self.force_brake = True
+
+        # for the 3rd corner
+        elif (curr_x > 1950 and curr_x < 2130) and (curr_z < 3450 and curr_z > 3416): # x & z both decreasing
+            # print("BRAKING for corner 3.")
+            self.force_brake = True
+
+        # for the 4th corner (left)
+        elif (curr_x > 2340 and curr_x < 2400) and (curr_z > 3680 and curr_z < 3730):
+            # print("BRAKING for corner 4")
+            self.force_brake = True
+
+        if self.force_brake:
+            # depends on braking setting in carla_bridge.py 
             throttle = 0
-        # added controls above^
+            brake = 1
+            print("Force braking:", brake)
+
+        # brake = 0            
 
         return VehicleControl(throttle=throttle, steering=steering, brake=brake, manual_gear_shift=True, gear=gear)
 

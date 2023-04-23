@@ -161,6 +161,7 @@ class SimpleWaypointFollowingLocalPlanner(LocalPlanner):
         close_waypoint = self.way_points_queue[min(120, waypoint_lookahead, len(self.way_points_queue) - 1)]
         
         control: VehicleControl = self.controller.run_in_series(next_waypoint=target_waypoint, close_waypoint=close_waypoint, most_recent_checkpoint=most_recent_checkpoint, far_waypoint=far_waypoint)
+        print("simple_waypoint: ", control)
         # self.logger.debug(f"\n"
         #                   f"Curr Transform: {self.agent.vehicle.transform}\n"
         #                   f"Target Location: {target_waypoint.location}\n"
