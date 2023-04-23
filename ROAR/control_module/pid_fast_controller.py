@@ -153,12 +153,12 @@ class PIDFastController(Controller):
         #if pitch > 3 and current_speed < 6: gear = 1
 
         # for 1st corner: 
-        if (curr_x > 1370 and curr_x < 1694) and (curr_z > 4204 and curr_z < 4270): # x decreasing & z increasing
+        if (curr_x > 1370 and curr_x < 1530) and (curr_z > 4204 and curr_z < 4270): # x decreasing & z increasing
             # print("BRAKING for corner 1.")
             self.force_brake = True
 
         # for 2nd corner:
-        elif (curr_x < 1343 and curr_x > 1318) and (curr_z < 3754 and curr_z > 3580): # x & z both decreasing
+        elif (curr_x < 1343 and curr_x > 1318) and (curr_z < 3660 and curr_z > 3580): # x & z both decreasing
             # print("BRAKING for corner 2.")
             self.force_brake = True
 
@@ -170,6 +170,14 @@ class PIDFastController(Controller):
         # for the 4th corner (left)
         elif (curr_x > 2340 and curr_x < 2400) and (curr_z > 3680 and curr_z < 3730):
             # print("BRAKING for corner 4")
+            self.force_brake = True
+
+        # for the corner that makes the car jump off the map: 
+        elif (curr_x < 5100 and curr_x > 5000) and (curr_z < 3840 and curr_z > 3808):
+            self.force_brake = True
+
+        # for sector 10 hard turning:
+        elif (curr_x < 3220 and curr_x > 3190) and (curr_z > 5248 and curr_z < 5290):
             self.force_brake = True
 
         if self.force_brake:
