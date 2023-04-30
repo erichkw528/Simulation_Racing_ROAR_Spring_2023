@@ -129,12 +129,12 @@ class PIDFastAgent(Agent):
                 if not competitive_mode:
                     print("REACHED")
         
-        # checking for six ramp
-        if self.most_recent_checkpoint == 6:
-            if at_point((3679.475341796875, 2432.698486328125), car_coords=self.car_coords, margin = 3):
-                self.most_recent_checkpoint = 6.5
-                if not competitive_mode:
-                    print("REACHED BEGINNING")
+        # # checking for six ramp
+        # if self.most_recent_checkpoint == 6:
+        #     if at_point((3679.475341796875, 2432.698486328125), car_coords=self.car_coords, margin = 3):
+        #         self.most_recent_checkpoint = 6.5
+        #         if not competitive_mode:
+        #             print("REACHED BEGINNING")
 
         # checking for six ramp end
         if self.most_recent_checkpoint == 6.5:

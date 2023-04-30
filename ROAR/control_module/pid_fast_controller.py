@@ -77,7 +77,12 @@ class PIDFastController(Controller):
         curr_z = self.agent.vehicle.transform.location.z
 
 
-        if current_speed > 260:
+        if self.force_brake:
+            # depends on braking setting in carla_bridge.py 
+            throttle = 0
+            brake = 1
+            # print("Force braking:", brake)
+        elif current_speed > 260:
             throttle = -1
             brake = 1
         elif self.delta_pitch > 0.7 and current_speed > 100 and not self.pitch_bypass and most_recent_checkpoint in [9] and pitch > -1.0: # big ramp, high speed
@@ -154,30 +159,32 @@ class PIDFastController(Controller):
 
         # for 1st corner: 
         if (curr_x > 1370 and curr_x < 1530) and (curr_z > 4204 and curr_z < 4270): # x decreasing & z increasing
-            # print("BRAKING for corner 1.")
+            print("BRAKING for corner 1.")
             self.force_brake = True
 
         # for 2nd corner:
-        elif (curr_x < 1343 and curr_x > 1318) and (curr_z < 3660 and curr_z > 3580): # x & z both decreasing
-            # print("BRAKING for corner 2.")
+        elif (curr_x < 1343 and curr_x > 1318) and (curr_z < 3655 and curr_z > 3580): # x & z both decreasing
+            print("BRAKING for corner 2.")
             self.force_brake = True
 
         # for the 3rd corner
-        elif (curr_x > 1950 and curr_x < 2130) and (curr_z < 3450 and curr_z > 3416): # x & z both decreasing
-            # print("BRAKING for corner 3.")
+        elif (curr_x > 2040 and curr_x < 2137) and (curr_z < 3500 and curr_z > 3400): # x & z both decreasing
+            print("BRAKING for corner 3.", brake)
             self.force_brake = True
 
         # for the 4th corner (left)
-        elif (curr_x > 2340 and curr_x < 2400) and (curr_z > 3680 and curr_z < 3730):
-            # print("BRAKING for corner 4")
+        elif (curr_x > 2370 and curr_x < 2400) and (curr_z > 3690 and curr_z < 3730):
+            print("BRAKING for corner 4")
             self.force_brake = True
 
         # for the corner that makes the car jump off the map: 
-        elif (curr_x < 5100 and curr_x > 5000) and (curr_z < 3840 and curr_z > 3808):
+        elif (curr_x < 5012 and curr_x > 5000) and (curr_z < 3840 and curr_z > 3808):
+            print("BRAKING for corner that jumps off map")
             self.force_brake = True
 
         # for sector 10 hard turning:
-        elif (curr_x < 3220 and curr_x > 3190) and (curr_z > 5248 and curr_z < 5290):
+        elif (curr_x < 3220 and curr_x > 3190) and (curr_z > 5270 and curr_z < 5290):
+            print("BRAKING for sector 10 hard right turn")
             self.force_brake = True
 
         if self.force_brake:

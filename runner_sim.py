@@ -31,7 +31,7 @@ def main(args):
                          agent_settings=agent_config)
         carla_runner.start_game_loop(agent=agent,
                                      use_manual_control=not args.auto)
-        #carla_runner.agent_collision_counter
+        carla_runner.agent_collision_counter
 
     except Exception as e:
         logging.error(f"Something bad happened during initialization: {e}")
@@ -56,7 +56,7 @@ if __name__ == "__main__":
     warnings.filterwarnings("ignore", module="carla")
     parser = argparse.ArgumentParser()
     parser.add_argument("--auto", type=str2bool, default=True, help="True to use auto control")
-    
+
     warnings.filterwarnings("ignore", module="carla")
     args = parser.parse_args()
     main(args)
