@@ -16,7 +16,7 @@ from ROAR.utilities_module.waypoint_tuning import *
 import os
 
 # SWITCH OFF FOR SUBMISSIONS
-competitive_mode = False
+competitive_mode = True
 
 class PIDFastAgent(Agent):
     def __init__(self, target_speed=40, **kwargs):
@@ -41,7 +41,7 @@ class PIDFastAgent(Agent):
             controller=self.pid_controller,
             mission_planner=self.mission_planner,
             behavior_planner=self.behavior_planner,
-            closeness_threshold=1,) # original 1
+            closeness_threshold=1,) # original 1 - this contorls how much allowance the agent gives to the optimal/pid line. 
         self.logger.debug(
             f"Waypoint Following Agent Initiated. Reading f"
             f"rom {self.route_file_path.as_posix()}")
@@ -153,7 +153,7 @@ class PIDFastAgent(Agent):
             control = self.local_planner.run_in_series(self.most_recent_checkpoint)
             
             
-        print("pid_fast_agent: ", control)
+        # print("pid_fast_agent: ", control)
         # print("Printing Current Location: ", self.vehicle.transform.record())
         # print("Current Brake Force: ", self.vehicle.control.brake)
         # print("Current throttle: ", self.vehicle.control.throttle)

@@ -22,7 +22,7 @@ def main(args):
                                npc_agent_class=PurePursuitAgent,
                                start_bbox=[2530, 99, 4064, 2543, 120, 4076],
                                competition_mode=True, # changed to false
-                               lap_count=1)
+                               lap_count=2) # this controls the lap counter, but agent idles after completing one lap. 
 
     try:
         my_vehicle = carla_runner.set_carla_world()

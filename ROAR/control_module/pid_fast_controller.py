@@ -117,7 +117,7 @@ class PIDFastController(Controller):
                 brake = 1
             elif most_recent_checkpoint in [11]:
                 throttle *= 0.05
-                brake = 0.5
+                brake = 0.5 # originally 0.5
             # print("Hard steering")
         elif wide_error > 0.05 and current_speed > 95: # wide turn
             throttle = max(0.2, 1 - 6.6*pow(wide_error + current_speed*0.0015, 3))
@@ -131,8 +131,9 @@ class PIDFastController(Controller):
                 brake = 1
                 steering = 1
             elif most_recent_checkpoint in [11]:
+                # throttle = 0 #FIXME 
                 throttle *= 0.05
-                brake = 0.5
+                brake = 0.3 # turn 11? originally 0.5
             # print("Wide turn")
         elif current_speed > self.max_speed:
             throttle = 0.9
@@ -143,7 +144,7 @@ class PIDFastController(Controller):
         
         if most_recent_checkpoint == 12.25:
             throttle -= 0.3
-            brake += 0.2
+            brake += 0.3 # originally 0.2
 
         # DEBUGGING
         #print(round(self.delta_pitch, 2))
@@ -186,6 +187,17 @@ class PIDFastController(Controller):
         elif (curr_x < 3220 and curr_x > 3190) and (curr_z > 5270 and curr_z < 5290):
             print("BRAKING for sector 10 hard right turn")
             self.force_brake = True
+
+        elif (curr_x < 2830 and curr_x > 2780) and (curr_z > 4850 and curr_z < 4880):
+            print("BRAKING for sector 11") # to test, remember to start @ checkpoint 10 because the difference in the top speed before braking. 
+            self.force_brake = True
+
+        # put further optmizations below: 
+        elif (curr_x < 5939 and curr_x > 5670) and (curr_z > 4120 and curr_z < 4150):
+            print("Braking for section 9 left turn (originally fish tails).")
+            self.force_brake = True
+
+        # later checkpoints, improve the line & increase top speed / mid corner. 
 
         if self.force_brake:
             # depends on braking setting in carla_bridge.py 
